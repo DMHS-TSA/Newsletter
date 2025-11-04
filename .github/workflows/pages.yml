@@ -3,11 +3,6 @@ name: Build and Deploy Pages
 on:
   push:
     branches: [ main, master ]
-    # also trigger when posts are added/changed so sitemap/rss regenerate
-    paths:
-      - 'posts/**'
-      - 'assets/**'
-      - 'public/**'
 
 # Ensure the workflow has explicit permissions to push and manage pages.
 permissions:
