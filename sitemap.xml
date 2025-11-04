@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://example.com/index.html</loc></url>
+  <url><loc>https://example.com/tags/october.html</loc></url>
+  <url><loc>https://example.com/tags/tech.html</loc></url>
+  <url><loc>https://example.com/tags/tryouts.html</loc></url>
+  <url><loc>https://example.com/tags/tsa.html</loc></url>
+  <url><loc>https://example.com/tags/speaker.html</loc></url>
+  <url><loc>https://example.com/tags/news.html</loc></url>
+  <url><loc>https://example.com/tags/dupont%20manual.html</loc></url>
+  <url><loc>https://example.com/posts/2025-11-4-novmber.html</loc></url>
+</urlset>

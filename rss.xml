@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+  <title>TSA Blog</title>
+  <link>https://example.com</link>
+  <description>Blog feed</description>
+
+  <item>
+    <title>October Newsletter</title>
+    <link>https://example.com/posts/2025-11-4-novmber.html</link>
+    <guid>https://example.com/posts/2025-11-4-novmber.html</guid>
+    <pubDate>Tue, 04 Nov 2025 00:00:00 GMT</pubDate>
+    <description><![CDATA[This in duPont Manual's TSA, students learned from guest speaker Da-Wyone Haynes and were given their prompts for tryouts.]]></description>
+  </item>
+
+</channel>
+</rss>
