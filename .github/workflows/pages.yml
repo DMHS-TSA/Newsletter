@@ -1,0 +1,42 @@
+name: Build and Deploy Pages
+
+on:
+  push:
+    branches: [ main, master ]
+    # also trigger when posts are added/changed so sitemap/rss regenerate
+    paths:
+      - 'posts/**'
+      - 'assets/**'
+      - 'public/**'
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build
+
+      - name: Upload newsletter artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: newsletters
+          path: ./docs/newsletters
+
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs

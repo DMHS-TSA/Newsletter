@@ -1,0 +1,83 @@
+:root{
+  --bg-dark:#0f0d0b;
+  --panel-dark:#12100f;
+  --muted-dark:#bfb6ad;
+  --accent-dark:#d4b68a;
+  --card-border-dark:#2a2623;
+
+  --bg-light:#fbfbfb;
+  --panel-light:#ffffff;
+  --muted-light:#333333;
+  --accent-light:#a65d2a;
+  --card-border-light:#ddd;
+}
+
+*{box-sizing:border-box}
+body{font-family: 'Courier New', Menlo, Monaco, monospace;margin:0}
+.wrap{max-width:980px;margin:0 auto;padding:28px}
+
+/* Theme classes applied to <body> */
+.theme-dark{--bg:var(--bg-dark);--panel:var(--panel-dark);--muted:var(--muted-dark);--accent:var(--accent-dark);--card-border:var(--card-border-dark);}
+.theme-light{--bg:var(--bg-light);--panel:var(--panel-light);--muted:var(--muted-light);--accent:var(--accent-light);--card-border:var(--card-border-light);}
+
+/* Default to dark */
+body{background:var(--bg);color:var(--muted)}
+
+.site-header{border-bottom:1px solid var(--card-border);display:flex;align-items:center}
+.brand{color:var(--accent);font-weight:700;text-decoration:none;font-size:20px}
+.nav{margin-left:auto;display:flex;align-items:center;gap:10px}
+.nav a{color:var(--muted);margin-left:0;text-decoration:none}
+.theme-btn{background:transparent;border:1px solid var(--card-border);color:var(--muted);padding:6px 8px;border-radius:6px;cursor:pointer}
+/* search input in header */
+.search-input{background:transparent;border:1px solid var(--card-border);color:var(--muted);padding:6px 8px;border-radius:6px;width:260px}
+.search-results{margin-top:8px}
+.search-item{display:block;padding:8px 10px;border-bottom:1px solid var(--card-border);color:var(--muted);text-decoration:none}
+.search-item .sr-title{font-weight:700;color:var(--muted)}
+.search-item .sr-meta{font-size:12px;color:var(--muted)}
+.search-item .sr-excerpt{font-size:13px;color:var(--muted);margin-top:6px}
+.search-none{padding:8px;color:var(--muted)}
+
+.main{padding:34px 0}
+.year{color:var(--accent);margin:20px 0}
+.post-card{display:flex;background:var(--panel);border:1px solid var(--card-border);padding:18px;margin-bottom:28px;align-items:flex-start;gap:16px}
+.post-card .meta{flex:1}
+.post-card .title{display:block;color:var(--muted);font-size:22px;text-decoration:none;font-weight:700;margin-bottom:6px}
+.excerpt{color:var(--muted);margin-bottom:8px}
+.info{color:var(--muted);font-size:13px}
+.tag{display:inline-block;background:transparent;border:1px solid var(--card-border);color:var(--accent);padding:4px 8px;margin-right:6px;border-radius:4px;font-size:12px;text-decoration:none}
+.post-full{background:transparent;padding:6px}
+.post-title{color:var(--muted)}
+.post-body{margin-top:18px;color:var(--muted)}
+.site-footer{border-top:1px solid var(--card-border);padding:16px;margin-top:48px}
+
+/* thumbnails */
+.post-card .thumb{width:220px;height:120px;flex:0 0 220px;margin-right:16px;overflow:hidden;border-radius:6px}
+.post-card .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+
+/* Responsive: stack card on small screens */
+@media (max-width: 720px) {
+  .post-card{flex-direction:column}
+  .post-card .thumb{width:100%;height:200px;flex:0 0 auto;margin-right:0}
+  .nav{gap:8px}
+  .wrap{padding:12px}
+  .brand{font-size:18px}
+  .search-input{width:120px}
+}
+
+@media (max-width: 420px) {
+  .post-card .thumb{height:160px}
+  .post-card{padding:12px}
+}
+
+/* featured image in post */
+.post-hero{margin-bottom:18px;display:flex;gap:16px;align-items:flex-start}
+.post-hero-img{width:25%;max-width:360px;height:auto;border-radius:6px;flex:0 0 25%;object-fit:cover}
+
+/* On small screens, make hero image full width */
+@media (max-width: 720px) {
+  .post-hero{display:block}
+  .post-hero-img{width:100%;flex:0 0 auto;height:auto}
+}
+
+/* Make images responsive inside posts */
+.post-body img{max-width:100%;height:auto}

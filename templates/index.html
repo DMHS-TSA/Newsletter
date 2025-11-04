@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>dMHS TSA Newsletter</title>
+  <link rel="stylesheet" href="/assets/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap">
+      <a class="brand" href="/">dMHS TSA Newsletter</a>
+      <nav class="nav">
+        <a href="/rss.xml">RSS</a>
+        <button id="theme-toggle" aria-label="Toggle theme" class="theme-btn">🌗</button>
+        <input id="search-input" class="search-input" placeholder="Search (tag:ctf date:2023 title:unity)" />
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap main">
+    {{content}}
+  </main>
+
+  <footer class="wrap site-footer">
+    <small>Built with a lightweight Node.js generator • Deploy with GitHub Actions</small>
+  </footer>
+  <script src="/assets/theme.js"></script>
+</body>
+</html>

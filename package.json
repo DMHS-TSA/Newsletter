@@ -1,0 +1,18 @@
+{
+  "name": "tsa-blog-static",
+  "version": "0.1.0",
+  "description": "Static blog generator that builds markdown posts into a lightweight HTML site and deploys via GitHub Actions.",
+  "main": "scripts/build.js",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "clean": "node -e \"require('fs').rmSync('./docs',{ recursive:true, force:true })\"",
+    "start": "node scripts/serve.js"
+  },
+  "keywords": ["static","blog","markdown","github-pages"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "marked": "^5.1.1",
+    "js-yaml": "^4.1.0"
+  }
+}
