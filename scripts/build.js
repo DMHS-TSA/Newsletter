@@ -220,7 +220,7 @@ function escapeXml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replac
 // Determine site URL used for RSS/sitemap/email absolute links.
 // Editable options (in order): environment variable SITE_URL, package.json "homepage", fallback to example.com
 const pkgPath = path.join(root, 'package.json');
-let siteUrl = 'https://example.com';
+let siteUrl = 'https://dmhs-tsa.github.io/Newsletter/';
 if (fs.existsSync(pkgPath)) {
   try { const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8')); if (pkg.homepage) siteUrl = pkg.homepage; } catch(e){}
 }
