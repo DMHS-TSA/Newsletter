@@ -4,14 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Tag: {{tag}}</title>
-  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="{{base}}assets/style.css">
 </head>
 <body>
-  <header class="site-header"><div class="wrap"><a class="brand" href="/">TSA Blog</a></div></header>
+  <header class="site-header"><div class="wrap"><a class="brand" href="{{base}}index.html">TSA Blog</a></div></header>
   <main class="wrap main">
     <h1>Tag: {{tag}}</h1>
     {{content}}
   </main>
-  <footer class="wrap site-footer"><small><a href="/">← Back to index</a></small></footer>
+  <footer class="wrap site-footer"><small><a href="{{base}}index.html">← Back to index</a></small></footer>
 </body>
 </html>

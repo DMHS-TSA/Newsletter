@@ -41,7 +41,10 @@ const postsDir = path.join(root, 'posts');
 const templatesDir = path.join(root, 'templates');
 const assetsDir = path.join(root, 'assets');
 const outDir = path.join(root, 'docs');
-
+// Clean output directory to avoid stale files from previous runs
+if (fs.existsSync(outDir)) {
+  try { fs.rmSync(outDir, { recursive: true, force: true }); } catch (e) { /* ignore */ }
+}
 ensureDir(outDir);
 
 const indexTpl = fs.readFileSync(path.join(templatesDir, 'index.html'), 'utf8');
@@ -141,13 +144,15 @@ for (const p of posts) {
       if (fs.existsSync(candidate1)) found = candidate1;
       else if (fs.existsSync(candidate2)) found = candidate2;
       if (found) {
-        const base = path.basename(found);
-        const dest = path.join(imagesOut, base);
-        try { fs.copyFileSync(found, dest); } catch(e){/* ignore */}
-        imageUrl = `/assets/images/${base}`;
-      }
+          const base = path.basename(found);
+          const dest = path.join(imagesOut, base);
+          try { fs.copyFileSync(found, dest); } catch(e){/* ignore */}
+          // Use relative (no leading slash) paths so assets resolve correctly when the site
+          // is hosted under a repository subpath on GitHub Pages (e.g. /owner/repo/).
+          imageUrl = `assets/images/${base}`;
+        }
     }
-    if (imageUrl) imageHtml = `<div class="post-hero"><img class="post-hero-img" src="${imageUrl}" alt="${p.title}"></div>`;
+  if (imageUrl) imageHtml = `<div class="post-hero"><img class="post-hero-img" src="{{base}}${imageUrl}" alt="${p.title}"></div>`;
     // store the resolved image URL for index thumbnails
     p.imageUrl = imageUrl;
   }
@@ -156,10 +161,11 @@ for (const p of posts) {
   const content = postTpl.replace(/\{\{title\}\}/g, p.title)
     .replace(/\{\{date\}\}/g, formatDate(p.date))
     .replace(/\{\{content\}\}/g, p.html)
-    .replace(/\{\{tags\}\}/g, p.tags.map(t=>`<span class="tag"><a href="/tags/${encodeURIComponent(t)}.html">${t}</a></span>`).join(' '))
+    .replace(/\{\{tags\}\}/g, p.tags.map(t=>`<span class="tag"><a href="tags/${encodeURIComponent(t)}.html">${t}</a></span>`).join(' '))
     .replace(/\{\{excerpt\}\}/g, p.excerpt)
     .replace(/\{\{image\}\}/g, imageHtml);
-  fs.writeFileSync(outPath, content, 'utf8');
+  // Post pages live in /posts/, so asset links need a "../" prefix
+  fs.writeFileSync(outPath, content.replace(/\{\{base\}\}/g, '../'), 'utf8');
 }
 
 // Generate index page that lists posts (title + excerpt linking to per-post pages)
@@ -171,16 +177,17 @@ for (const year of Object.keys(byYear).sort((a,b)=>b.localeCompare(a))) {
     <article class="post-card">
       ${p.imageUrl ? `<div class="thumb"><img src="${p.imageUrl}" alt="${p.title}"></div>` : ''}
       <div class="meta">
-        <a class="title" href="/posts/${p.slug}.html">${p.title}</a>
+        <a class="title" href="posts/${p.slug}.html">${p.title}</a>
         <div class="excerpt">${p.excerpt}</div>
-        <div class="info">${formatDate(p.date)} • <a href="/posts/${p.slug}.html">read</a></div>
-        <div class="tags">${p.tags.map(t=>`<a class="tag" href="/tags/${encodeURIComponent(t)}.html">${t}</a>`).join(' ')}</div>
+  <div class="info">${formatDate(p.date)} • <a href="posts/${p.slug}.html">read</a></div>
+        <div class="tags">${p.tags.map(t=>`<a class="tag" href="tags/${encodeURIComponent(t)}.html">${t}</a>`).join(' ')}</div>
       </div>
     </article>\n`;
   }
 }
 
-const finalIndex = indexTpl.replace(/\{\{content\}\}/g, indexContent);
+// Write index with base = '' (root)
+const finalIndex = indexTpl.replace(/\{\{content\}\}/g, indexContent).replace(/\{\{base\}\}/g, '');
 fs.writeFileSync(path.join(outDir, 'index.html'), finalIndex, 'utf8');
 
 // Generate tag pages
@@ -196,12 +203,14 @@ for (const p of posts) {
 for (const tag of Object.keys(tagMap)) {
   const postsList = tagMap[tag].map(p => `
     <article class="post-card">
-      <a class="title" href="/index.html#${p.slug}">${p.title}</a>
+      <a class="title" href="index.html#${p.slug}">${p.title}</a>
       <div class="excerpt">${p.excerpt}</div>
       <div class="info">${formatDate(p.date)}</div>
     </article>`).join('\n');
   const content = tagTpl.replace(/\{\{tag\}\}/g, tag)
-    .replace(/\{\{content\}\}/g, postsList);
+    .replace(/\{\{content\}\}/g, postsList)
+    // tag pages are in /tags/, so use ../ for assets
+    .replace(/\{\{base\}\}/g, '../');
   fs.writeFileSync(path.join(outDir, 'tags', `${tag}.html`), content, 'utf8');
 }
 
@@ -219,7 +228,7 @@ if (process.env.SITE_URL) siteUrl = process.env.SITE_URL;
 // Normalize: remove trailing slash
 siteUrl = siteUrl.replace(/\/$/, '');
 
-const rssItems = posts.map(p => `
+  const rssItems = posts.map(p => `
   <item>
     <title>${escapeXml(p.title)}</title>
     <link>${siteUrl}/posts/${p.slug}.html</link>
@@ -273,11 +282,12 @@ const newsletterPosts = posts.filter(p => {
 if (!newsletterPosts.length && posts.length) {
   newsletterPosts.push(posts[0]);
 }
-for (const p of newsletterPosts) {
+  for (const p of newsletterPosts) {
   const raw = fs.readFileSync(path.join(postsDir, p.file), 'utf8');
   const fm = parseFrontMatter(raw).data || {};
   const subject = fm.email_subject || p.title;
-  const hero = (p.imageUrl) ? `<div class="hero"><img src="${siteUrl}${p.imageUrl}" alt="${p.title}"/></div>` : '';
+  // p.imageUrl is stored as a relative path without a leading slash (e.g. assets/images/foo.jpg)
+  const hero = (p.imageUrl) ? `<div class="hero"><img src="${siteUrl}/${p.imageUrl}" alt="${p.title}"/></div>` : '';
   const emailHtml = fs.readFileSync(path.join(templatesDir, 'email.html'), 'utf8')
     .replace(/\{\{subject\}\}/g, subject)
     .replace(/\{\{title\}\}/g, p.title)

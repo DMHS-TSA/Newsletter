@@ -4,15 +4,15 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>{{title}}</title>
-  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="stylesheet" href="{{base}}assets/style.css">
 </head>
 <body>
   <header class="site-header">
     <div class="wrap">
-      <a class="brand" href="/">TSA Blog</a>
+  <a class="brand" href="{{base}}index.html">TSA Blog</a>
       <nav class="nav">
-        <a href="/">Home</a>
-        <a href="/">Blog</a>
+  <a href="{{base}}index.html">Home</a>
+  <a href="{{base}}index.html">Blog</a>
         <button id="theme-toggle" aria-label="Toggle theme" class="theme-btn">🌗</button>
         <input id="search-input" class="search-input" placeholder="Search..." />
       </nav>
@@ -31,8 +31,8 @@
   </main>
 
   <footer class="wrap site-footer">
-    <small><a href="/">← Back to index</a></small>
+    <small><a href="{{base}}index.html">← Back to index</a></small>
   </footer>
-  <script src="/assets/theme.js"></script>
+  <script src="{{base}}assets/theme.js"></script>
 </body>
 </html>
