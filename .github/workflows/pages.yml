@@ -9,6 +9,12 @@ on:
       - 'assets/**'
       - 'public/**'
 
+# Ensure the workflow has explicit permissions to push and manage pages.
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
